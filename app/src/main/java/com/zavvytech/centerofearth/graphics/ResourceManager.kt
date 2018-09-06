@@ -8,14 +8,14 @@ object ResourceManager {
     var resources: Resources? = null
     private val textures: HashMap<Int, CounterFor<Texture>> = HashMap()
 
+    /**
+     * Loads an image into memory if it is not already loaded. Call as a pair with notifyDisposed()
+     * to avoid holding onto memory
+     */
     fun getTexture(@DrawableRes resId: Int): Texture {
         if (resources == null) throw NullPointerException("Resources not yet initialised")
 
-        val prevValue = if (textures.containsKey(resId)) {
-            textures[resId]
-        } else {
-            CounterFor(Texture(resId, resources!!), 0)
-        }!!
+        val prevValue = textures.getOrElse(resId) { CounterFor(Texture(resId, resources!!), 0) }
         prevValue.increment()
         textures[resId] = prevValue
         return prevValue.t
