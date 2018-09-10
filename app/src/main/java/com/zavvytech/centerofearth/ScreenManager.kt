@@ -16,7 +16,6 @@ object ScreenManager {
 
     fun setScreen(type: ScreenType): Screen {
         val newScreen = typeToScreen(type)
-        newScreen.create()
         screens.add(newScreen)
         return newScreen
     }
