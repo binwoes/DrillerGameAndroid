@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback {
         setContentView(R.layout.activity_main)
 
         ResourceManager.resources = resources
+        ScreenManager.setSize(surfaceView.width.toFloat(), surfaceView.height.toFloat())
         ScreenManager.setScreen(ScreenManager.ScreenType.GAME)
         isRunning = true
         surfaceView.holder.addCallback(this)
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback {
     }
 
     private fun startGameRunning() {
-        stopGameRunning()
         gameThread = Thread {
             while (isRunning) {
                 if (surfaceCreated) {
