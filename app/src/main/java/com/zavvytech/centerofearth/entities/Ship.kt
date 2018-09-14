@@ -1,5 +1,7 @@
 package com.zavvytech.centerofearth.entities
 
+import com.zavvytech.centerofearth.R
+import com.zavvytech.centerofearth.ScreenManager
 import org.jbox2d.collision.shapes.CircleShape
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.BodyDef
@@ -8,14 +10,21 @@ import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
 
-class Ship (position: Vec2, world: World): Entity(position, world) {
+class Ship (worldPosition: Vec2, world: World): Entity(worldPosition, world) {
+    override val width: Float = ScreenManager.viewport.width()
+    override val height: Float = ScreenManager.viewport.height()
     override var bodyDef: BodyDef = createBodyDef()
     override var fixtureDef: FixtureDef = createFixtureDef()
+    val fixtureRadius = 50f
+
+    override fun textureResId(): Int {
+        return R.drawable.ship
+    }
 
     fun createBodyDef(initialVelocity: Vec2 = Vec2(0f,0f)): BodyDef {
         val bodyDef = BodyDef()
 
-        bodyDef.position = position
+        bodyDef.position = worldPosition
         bodyDef.angle = 0.0f
         bodyDef.linearVelocity = initialVelocity
         bodyDef.angularVelocity = 0.0f
@@ -33,7 +42,7 @@ class Ship (position: Vec2, world: World): Entity(position, world) {
 
     fun createFixtureDef(): FixtureDef {
         val shape = CircleShape()
-        shape.radius = 7.5f
+        shape.radius = fixtureRadius
         val fixtureDef = FixtureDef()
         fixtureDef.shape = shape
         fixtureDef.userData = null
