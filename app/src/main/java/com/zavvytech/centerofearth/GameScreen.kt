@@ -1,7 +1,6 @@
 package com.zavvytech.centerofearth
 
 import android.graphics.Canvas
-import android.graphics.RectF
 import android.view.MotionEvent
 import com.zavvytech.centerofearth.entities.Ship
 import org.jbox2d.common.Vec2
@@ -11,15 +10,12 @@ import org.jbox2d.dynamics.World
 class GameScreen : Screen {
     override val screenType = ScreenManager.ScreenType.GAME
     private val stepIterations = 20
-    private val screenHeight = 300
-    private val screenWidth = screenHeight
     private val world = World(Vec2(0f, 9.81f))
     val ship = Ship(Vec2(40f, 80f), world)
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
-        val diameter = ship.fixtureRadius * 2
-        ship.sprite.draw(canvas, RectF(ship.body.position.x, ship.body.position.y, ship.body.position.x + diameter, ship.body.position.y + diameter))
+        ship.draw(canvas)
     }
 
     override fun onUpdate(dt: Float) {

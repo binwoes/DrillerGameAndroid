@@ -11,8 +11,10 @@ import org.jbox2d.dynamics.World
 
 
 class Ship (worldPosition: Vec2, world: World): Entity(worldPosition, world) {
-    override val width: Float = ScreenManager.viewport.width()
-    override val height: Float = ScreenManager.viewport.height()
+    override val width: Float
+        get() = ScreenManager.viewport.width() / 5f
+    override val height: Float
+        get() = width
     override var bodyDef: BodyDef = createBodyDef()
     override var fixtureDef: FixtureDef = createFixtureDef()
     val fixtureRadius = 50f

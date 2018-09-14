@@ -1,5 +1,6 @@
 package com.zavvytech.centerofearth.entities
 
+import android.graphics.Canvas
 import android.graphics.RectF
 import android.support.annotation.DrawableRes
 import com.zavvytech.centerofearth.graphics.BitmapSprite
@@ -10,24 +11,24 @@ import org.jbox2d.dynamics.BodyDef
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-abstract class Entity(var worldPosition: Vec2, val world: World) {
+abstract class Entity(val worldPosition: Vec2, val world: World) {
     protected abstract var bodyDef: BodyDef
     protected abstract var fixtureDef: FixtureDef
     protected abstract val width: Float
     protected abstract val height: Float
-    val body: Body by lazy {
+    private val body: Body by lazy {
         createBody()
     }
     private val texture by lazy {
         ResourceManager.getTexture(textureResId())
     }
-    val sprite: BitmapSprite by lazy {
+    private val sprite: BitmapSprite by lazy {
         BitmapSprite(texture)
     }
-    val canvasPosition: RectF = RectF(0f,0f,0f,0f)
+    private val canvasPosition: RectF = RectF(0f,0f,0f,0f)
         get() {
-            field.left = worldPosition.x
-            field.top = worldPosition.y
+            field.left = body.position.x
+            field.top = body.position.y
             field.right = field.left + width
             field.bottom = field.top + height
             return field
@@ -39,5 +40,9 @@ abstract class Entity(var worldPosition: Vec2, val world: World) {
         val body: Body = world.createBody(bodyDef)
         body.createFixture(fixtureDef)
         return body
+    }
+
+    fun draw(canvas: Canvas) {
+        sprite.draw(canvas, canvasPosition)
     }
 }
