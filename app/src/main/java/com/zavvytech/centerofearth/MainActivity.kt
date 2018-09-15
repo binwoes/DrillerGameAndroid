@@ -23,8 +23,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback {
         setContentView(R.layout.activity_main)
 
         ResourceManager.resources = resources
-        surfaceView.post { ScreenManager.setSize(surfaceView.width.toFloat(), surfaceView.height.toFloat()) }
-        ScreenManager.setScreen(ScreenManager.ScreenType.GAME)
+        surfaceView.post {
+            ScreenManager.setSize(surfaceView.width.toFloat(), surfaceView.height.toFloat())
+            ScreenManager.setScreen(ScreenManager.ScreenType.GAME)
+        }
         isRunning = true
         surfaceView.holder.addCallback(this)
         surfaceView.setOnTouchListener { _, motionEvent ->

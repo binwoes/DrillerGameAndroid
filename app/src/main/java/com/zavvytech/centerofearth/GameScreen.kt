@@ -3,6 +3,7 @@ package com.zavvytech.centerofearth
 import android.graphics.Canvas
 import android.view.MotionEvent
 import com.zavvytech.centerofearth.entities.Ship
+import com.zavvytech.centerofearth.graphics.Utils.screenWidthMetres
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.Body
 import org.jbox2d.dynamics.World
@@ -11,7 +12,7 @@ class GameScreen : Screen {
     override val screenType = ScreenManager.ScreenType.GAME
     private val stepIterations = 20
     private val world = World(Vec2(0f, 9.81f))
-    val ship = Ship(Vec2(40f, 80f), world)
+    val ship = Ship(Vec2(screenWidthMetres * 2/5, 0f), world)
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
