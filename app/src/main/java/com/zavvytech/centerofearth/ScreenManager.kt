@@ -1,6 +1,7 @@
 package com.zavvytech.centerofearth
 
 import android.graphics.Canvas
+import android.graphics.RectF
 import android.view.MotionEvent
 
 object ScreenManager {
@@ -8,15 +9,20 @@ object ScreenManager {
         SPLASH, GAME
     }
 
+    val viewport: RectF = RectF(0f,0f,0f,0f)
     private var screens = ArrayList<Screen>()
     private var lastUpdate = System.currentTimeMillis()
 
     private val currentScreen: Screen?
         get() = if (screens.size >= 1) screens[screens.size - 1] else null
 
+    fun setSize(width: Float, height: Float) {
+        viewport.right = width
+        viewport.bottom = height
+    }
+
     fun setScreen(type: ScreenType): Screen {
         val newScreen = typeToScreen(type)
-        newScreen.create()
         screens.add(newScreen)
         return newScreen
     }

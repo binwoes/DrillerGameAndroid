@@ -23,7 +23,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback {
         setContentView(R.layout.activity_main)
 
         ResourceManager.resources = resources
-        ScreenManager.setScreen(ScreenManager.ScreenType.GAME)
+        surfaceView.post {
+            ScreenManager.setSize(surfaceView.width.toFloat(), surfaceView.height.toFloat())
+            ScreenManager.setScreen(ScreenManager.ScreenType.GAME)
+        }
         isRunning = true
         surfaceView.holder.addCallback(this)
         surfaceView.setOnTouchListener { _, motionEvent ->
@@ -43,14 +46,15 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback {
     }
 
     private fun startGameRunning() {
-        stopGameRunning()
         gameThread = Thread {
             while (isRunning) {
                 if (surfaceCreated) {
                     synchronized(surfaceView.holder) {
                         val canvas = surfaceView.holder.lockCanvas()
-                        ScreenManager.gameLoop(canvas)
-                        surfaceView.holder.unlockCanvasAndPost(canvas)
+                        if (canvas != null) {
+                            ScreenManager.gameLoop(canvas)
+                            surfaceView.holder.unlockCanvasAndPost(canvas)
+                        }
                     }
                 }
             }
