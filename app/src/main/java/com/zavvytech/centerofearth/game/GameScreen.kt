@@ -1,7 +1,9 @@
-package com.zavvytech.centerofearth
+package com.zavvytech.centerofearth.game
 
 import android.graphics.Canvas
 import android.view.MotionEvent
+import com.zavvytech.centerofearth.Screen
+import com.zavvytech.centerofearth.ScreenManager
 import com.zavvytech.centerofearth.entities.Ship
 import com.zavvytech.centerofearth.graphics.Utils.screenWidthMetres
 import org.jbox2d.common.Vec2
@@ -30,6 +32,10 @@ class GameScreen : Screen {
 
     override fun dispose() {
         world.cleanupAllBodies()
+    }
+
+    override fun onBackPressed() {
+        ScreenManager.finishScreen(this)
     }
 }
 

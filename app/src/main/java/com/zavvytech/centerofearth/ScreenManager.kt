@@ -3,6 +3,7 @@ package com.zavvytech.centerofearth
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.view.MotionEvent
+import com.zavvytech.centerofearth.game.GameScreen
 
 object ScreenManager {
     enum class ScreenType {
@@ -10,7 +11,7 @@ object ScreenManager {
     }
 
     val viewport: RectF = RectF(0f,0f,0f,0f)
-    private var screens = ArrayList<Screen>()
+    private val screens = ArrayList<Screen>()
     private var lastUpdate = System.currentTimeMillis()
 
     private val currentScreen: Screen?
@@ -49,6 +50,14 @@ object ScreenManager {
         while (currentScreen != null) {
             finishScreen(currentScreen!!)
         }
+    }
+
+    /**
+     * Returns true if ScreenManager doesn't contain any screens
+     */
+    fun onBackPressed(): Boolean {
+        currentScreen?.onBackPressed()
+        return currentScreen == null
     }
 
     private fun typeToScreen(type: ScreenType): Screen {
