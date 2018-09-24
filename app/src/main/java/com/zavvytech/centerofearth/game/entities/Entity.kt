@@ -1,4 +1,4 @@
-package com.zavvytech.centerofearth.entities
+package com.zavvytech.centerofearth.game.entities
 
 import android.graphics.Canvas
 import android.graphics.RectF

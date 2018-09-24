@@ -1,20 +1,24 @@
-package com.zavvytech.centerofearth.entities.ground
+package com.zavvytech.centerofearth.game.entities
 
-import com.zavvytech.centerofearth.entities.Entity
-import com.zavvytech.centerofearth.entities.ObjectType
-import com.zavvytech.centerofearth.graphics.Utils
-import org.jbox2d.collision.shapes.PolygonShape
+import com.zavvytech.centerofearth.R
+import com.zavvytech.centerofearth.graphics.Utils.screenWidthMetres
+import org.jbox2d.collision.shapes.CircleShape
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.BodyDef
 import org.jbox2d.dynamics.BodyType
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-abstract class Ground(worldPosition: Vec2, world: World): Entity(worldPosition, world) {
-    final override val width: Float = Utils.screenWidthMetres / 5f
-    final override val height: Float = width * texture.height/texture.width
+
+class Ship (worldPosition: Vec2, world: World): Entity(worldPosition, world) {
+    override val width: Float = screenWidthMetres / 5f
+    override val height: Float = width * texture.height/texture.width
     override val bodyDef: BodyDef = createBodyDef()
     override val fixtureDef: FixtureDef = createFixtureDef()
+
+    override fun textureResId(): Int {
+        return R.drawable.ship
+    }
 
     private fun createBodyDef(initialVelocity: Vec2 = Vec2(0f,0f)): BodyDef {
         val bodyDef = BodyDef()
@@ -30,14 +34,14 @@ abstract class Ground(worldPosition: Vec2, world: World): Entity(worldPosition, 
         bodyDef.gravityScale = 1.0f
         bodyDef.linearDamping = 0.0f
         bodyDef.angularDamping = 0.0f
-        bodyDef.userData = ObjectType.GROUND
-        bodyDef.type = BodyType.STATIC
+        bodyDef.userData = ObjectType.SHIP
+        bodyDef.type = BodyType.DYNAMIC
         return bodyDef
     }
 
     private fun createFixtureDef(): FixtureDef {
-        val shape = PolygonShape()
-        shape.setAsBox(width/2, height/2)
+        val shape = CircleShape()
+        shape.radius = width/2f
         val fixtureDef = FixtureDef()
         fixtureDef.shape = shape
         fixtureDef.userData = null
@@ -47,8 +51,4 @@ abstract class Ground(worldPosition: Vec2, world: World): Entity(worldPosition, 
         fixtureDef.isSensor = false
         return fixtureDef
     }
-
-    abstract fun onMine()
-    abstract fun groundTypeProbability(depthMetres: Float)
-
 }
