@@ -13,8 +13,8 @@ import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
 abstract class Entity(val worldPosition: Vec2, private val world: World) {
-    protected abstract var bodyDef: BodyDef
-    protected abstract var fixtureDef: FixtureDef
+    protected abstract val bodyDef: BodyDef
+    protected abstract val fixtureDef: FixtureDef
     protected abstract val width: Float
     protected abstract val height: Float
     private val body: Body by lazy {
