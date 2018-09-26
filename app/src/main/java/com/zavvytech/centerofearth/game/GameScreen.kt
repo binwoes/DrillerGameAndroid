@@ -5,7 +5,7 @@ import android.view.MotionEvent
 import com.zavvytech.centerofearth.Screen
 import com.zavvytech.centerofearth.ScreenManager
 import com.zavvytech.centerofearth.game.entities.Ship
-import com.zavvytech.centerofearth.game.entities.ground.Ground
+import com.zavvytech.centerofearth.game.entities.ground.Dirt
 import com.zavvytech.centerofearth.graphics.Utils.screenWidthMetres
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.Body
@@ -16,11 +16,12 @@ class GameScreen : Screen {
     private val stepIterations = 20
     private val world = World(Vec2(0f, 9.81f))
     val ship = Ship(Vec2(screenWidthMetres * 2/5, 0f), world)
-    val floor = ArrayList<Ground>()
+    val floor = listOf(Dirt(Vec2(screenWidthMetres*2/5, screenWidthMetres), world))
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
         ship.draw(canvas)
+        floor.forEach { it.draw(canvas) }
     }
 
     override fun onUpdate(dt: Float) {

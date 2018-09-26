@@ -17,7 +17,7 @@ abstract class Entity(val worldPosition: Vec2, private val world: World) {
     protected abstract val fixtureDef: FixtureDef
     protected abstract val width: Float
     protected abstract val height: Float
-    private val body: Body by lazy {
+    protected val body: Body by lazy {
         createBody()
     }
     protected val texture by lazy {
@@ -44,6 +44,6 @@ abstract class Entity(val worldPosition: Vec2, private val world: World) {
     }
 
     fun draw(canvas: Canvas) {
-        sprite.draw(canvas, canvasPosition)
+        sprite.draw(canvas, canvasPosition, body.angle)
     }
 }

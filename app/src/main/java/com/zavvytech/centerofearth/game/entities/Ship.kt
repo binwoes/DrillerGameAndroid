@@ -46,7 +46,7 @@ class Ship (worldPosition: Vec2, world: World): Entity(worldPosition, world) {
         fixtureDef.shape = shape
         fixtureDef.userData = null
         fixtureDef.friction = 0.35f
-        fixtureDef.restitution = 0.05f
+        fixtureDef.restitution = 0.1f
         fixtureDef.density = 1f
         fixtureDef.isSensor = false
         return fixtureDef
