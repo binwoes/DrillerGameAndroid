@@ -10,7 +10,7 @@ import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
 
-class Ship (worldPosition: Vec2, world: World): Entity(worldPosition, world) {
+class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world) {
     override val width: Float = screenWidthMetres / 5f
     override val height: Float = width * texture.height/texture.width
     override val bodyDef: BodyDef = createBodyDef()
@@ -23,7 +23,7 @@ class Ship (worldPosition: Vec2, world: World): Entity(worldPosition, world) {
     private fun createBodyDef(initialVelocity: Vec2 = Vec2(0f,0f)): BodyDef {
         val bodyDef = BodyDef()
 
-        bodyDef.position = worldPosition
+        bodyDef.position = initialPosition
         bodyDef.angle = 0.0f
         bodyDef.linearVelocity = initialVelocity
         bodyDef.angularVelocity = 0.0f

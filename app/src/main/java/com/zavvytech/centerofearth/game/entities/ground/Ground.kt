@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.BodyType
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-abstract class Ground(blockSize: Float, worldPosition: Vec2, world: World): Entity(worldPosition, world) {
+abstract class Ground(blockSize: Float, initialPosition: Vec2, world: World): Entity(initialPosition, world) {
     final override val width: Float = blockSize
     final override val height: Float = blockSize
     override val bodyDef: BodyDef = createBodyDef()
@@ -18,7 +18,7 @@ abstract class Ground(blockSize: Float, worldPosition: Vec2, world: World): Enti
     private fun createBodyDef(initialVelocity: Vec2 = Vec2(0f,0f)): BodyDef {
         val bodyDef = BodyDef()
 
-        bodyDef.position = worldPosition
+        bodyDef.position = initialPosition
         bodyDef.angle = 0.0f
         bodyDef.linearVelocity = initialVelocity
         bodyDef.angularVelocity = 0.0f

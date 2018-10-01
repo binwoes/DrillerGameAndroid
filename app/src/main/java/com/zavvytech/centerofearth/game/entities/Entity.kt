@@ -13,7 +13,7 @@ import org.jbox2d.dynamics.BodyDef
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-abstract class Entity(val worldPosition: Vec2, private val world: World) {
+abstract class Entity(val initialPosition: Vec2, private val world: World) {
     protected abstract val bodyDef: BodyDef
     protected abstract val fixtureDef: FixtureDef
     protected abstract val width: Float
@@ -27,10 +27,12 @@ abstract class Entity(val worldPosition: Vec2, private val world: World) {
     private val sprite: BitmapSprite by lazy {
         BitmapSprite(texture)
     }
+    var worldPosition = initialPosition
+        get() = body.position
     private val canvasPosition: RectF = RectF(0f,0f,0f,0f)
         get() {
-            field.left = Utils.metresToPixels(body.position.x - ScreenManager.viewport.left)
-            field.top = Utils.metresToPixels(body.position.y - ScreenManager.viewport.top)
+            field.left = Utils.metresToPixels(worldPosition.x) - ScreenManager.viewport.left
+            field.top = Utils.metresToPixels(worldPosition.y) - ScreenManager.viewport.top
             field.right = field.left + Utils.metresToPixels(width)
             field.bottom = field.top + Utils.metresToPixels(height)
             return field

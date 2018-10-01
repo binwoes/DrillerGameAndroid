@@ -26,7 +26,8 @@ class GameScreen : Screen {
 
     override fun onUpdate(dt: Float) {
         world.step(dt, stepIterations, stepIterations)
-        world.cleanupBodies { it.position.y  < ScreenManager.viewport.top }
+        ScreenManager.viewport.offsetTo(0f, Utils.metresToPixels(ship.worldPosition.y - screenWidthMetres/2))
+        world.cleanupBodies { it.position.y < Utils.pixelsToMetres(ScreenManager.viewport.top) }
     }
 
     override fun onTouch(e: MotionEvent) {
