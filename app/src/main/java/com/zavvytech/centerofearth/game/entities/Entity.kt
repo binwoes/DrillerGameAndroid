@@ -3,6 +3,7 @@ package com.zavvytech.centerofearth.game.entities
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.support.annotation.DrawableRes
+import com.zavvytech.centerofearth.ScreenManager
 import com.zavvytech.centerofearth.graphics.BitmapSprite
 import com.zavvytech.centerofearth.graphics.ResourceManager
 import com.zavvytech.centerofearth.graphics.Utils
@@ -28,8 +29,8 @@ abstract class Entity(val worldPosition: Vec2, private val world: World) {
     }
     private val canvasPosition: RectF = RectF(0f,0f,0f,0f)
         get() {
-            field.left = Utils.metresToPixels(body.position.x)
-            field.top = Utils.metresToPixels(body.position.y)
+            field.left = Utils.metresToPixels(body.position.x - ScreenManager.viewport.left)
+            field.top = Utils.metresToPixels(body.position.y - ScreenManager.viewport.top)
             field.right = field.left + Utils.metresToPixels(width)
             field.bottom = field.top + Utils.metresToPixels(height)
             return field

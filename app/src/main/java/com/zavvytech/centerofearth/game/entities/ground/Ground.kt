@@ -2,7 +2,6 @@ package com.zavvytech.centerofearth.game.entities.ground
 
 import com.zavvytech.centerofearth.game.entities.Entity
 import com.zavvytech.centerofearth.game.entities.ObjectType
-import com.zavvytech.centerofearth.graphics.Utils
 import org.jbox2d.collision.shapes.PolygonShape
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.BodyDef
@@ -10,9 +9,9 @@ import org.jbox2d.dynamics.BodyType
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-abstract class Ground(worldPosition: Vec2, world: World): Entity(worldPosition, world) {
-    final override val width: Float = Utils.screenWidthMetres / 5f
-    final override val height: Float = width * texture.height/texture.width
+abstract class Ground(blockSize: Float, worldPosition: Vec2, world: World): Entity(worldPosition, world) {
+    final override val width: Float = blockSize
+    final override val height: Float = blockSize
     override val bodyDef: BodyDef = createBodyDef()
     override val fixtureDef: FixtureDef = createFixtureDef()
 

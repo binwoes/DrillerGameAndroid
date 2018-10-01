@@ -4,7 +4,7 @@ import com.zavvytech.centerofearth.R
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.World
 
-class Dirt(worldPosition: Vec2, world: World) : Ground(worldPosition, world) {
+class Dirt(blockSize: Float, worldPosition: Vec2, world: World) : Ground(blockSize, worldPosition, world) {
     override fun onMine() {
 
     }
