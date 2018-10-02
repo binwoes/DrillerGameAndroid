@@ -18,21 +18,18 @@ class GameScreen : Screen {
     private val stepIterations = 20
     private val world = World(Vec2(0f, 9.81f))
     val ship = Ship(Vec2(screenWidthMetres/2f, -blockSizeMetres*2), world)
-
-    init {
-        Floor.clearBlockList()
-    }
+    private val floor = Floor()
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
-        Floor.draw(canvas)
+        floor.draw(canvas)
         ship.draw(canvas)
     }
 
     override fun onUpdate(dt: Float) {
         world.step(dt, stepIterations, stepIterations)
         ScreenManager.viewport.offsetTo(0f, Utils.metresToPixels(ship.worldPosition.y - screenWidthMetres/2))
-        Floor.generateFloorIfNeeded(ScreenManager.viewport, world)
+        floor.generateFloorIfNeeded(ScreenManager.viewport, world)
         world.cleanupBodies { it.position.y < Utils.pixelsToMetres(ScreenManager.viewport.top) }
     }
 

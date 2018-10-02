@@ -9,14 +9,10 @@ import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.World
 import java.util.*
 
-object Floor {
+class Floor {
     private val blockList = ArrayList<Ground>()
     private var floorGenerationDepth = 0f
     private val randomiser = Random()
-
-    fun clearBlockList() {
-        blockList.clear()
-    }
 
     fun draw(canvas: Canvas) {
         blockList.forEach { it.draw(canvas) }
@@ -33,8 +29,8 @@ object Floor {
 
     private fun createGround(worldPosition: Vec2, world: World): Ground? {
         return when (randomiser.nextFloat()) {
-            in 0f..0.1f -> null
-            else -> Dirt(blockSizeMetres, worldPosition, world)
+            in 0f..0.1f -> Dirt(blockSizeMetres, worldPosition, world)
+            else -> null
         }
     }
 
