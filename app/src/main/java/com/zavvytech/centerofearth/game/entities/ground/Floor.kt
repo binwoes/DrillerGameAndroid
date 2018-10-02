@@ -14,6 +14,10 @@ object Floor {
     private var floorGenerationDepth = 0f
     private val randomiser = Random()
 
+    fun clearBlockList() {
+        blockList.clear()
+    }
+
     fun draw(canvas: Canvas) {
         blockList.forEach { it.draw(canvas) }
     }
@@ -29,8 +33,8 @@ object Floor {
 
     private fun createGround(worldPosition: Vec2, world: World): Ground? {
         return when (randomiser.nextFloat()) {
-            in 0f..0.1f -> Dirt(blockSizeMetres, worldPosition, world)
-            else -> null
+            in 0f..0.1f -> null
+            else -> Dirt(blockSizeMetres, worldPosition, world)
         }
     }
 

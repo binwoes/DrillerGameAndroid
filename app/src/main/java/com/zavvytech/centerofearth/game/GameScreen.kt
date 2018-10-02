@@ -7,6 +7,7 @@ import com.zavvytech.centerofearth.ScreenManager
 import com.zavvytech.centerofearth.game.entities.Ship
 import com.zavvytech.centerofearth.game.entities.ground.Floor
 import com.zavvytech.centerofearth.graphics.Utils
+import com.zavvytech.centerofearth.graphics.Utils.blockSizeMetres
 import com.zavvytech.centerofearth.graphics.Utils.screenWidthMetres
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.Body
@@ -16,7 +17,11 @@ class GameScreen : Screen {
     override val screenType = ScreenManager.ScreenType.GAME
     private val stepIterations = 20
     private val world = World(Vec2(0f, 9.81f))
-    val ship = Ship(Vec2(screenWidthMetres/2f, 0f), world)
+    val ship = Ship(Vec2(screenWidthMetres/2f, -blockSizeMetres*2), world)
+
+    init {
+        Floor.clearBlockList()
+    }
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
