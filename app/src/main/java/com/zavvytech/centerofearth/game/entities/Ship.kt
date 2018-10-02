@@ -1,7 +1,7 @@
 package com.zavvytech.centerofearth.game.entities
 
 import com.zavvytech.centerofearth.R
-import com.zavvytech.centerofearth.graphics.Utils.screenWidthMetres
+import com.zavvytech.centerofearth.graphics.Utils.blockSizeMetres
 import org.jbox2d.collision.shapes.CircleShape
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.BodyDef
@@ -9,9 +9,8 @@ import org.jbox2d.dynamics.BodyType
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-
 class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world) {
-    override val width: Float = screenWidthMetres / 5f
+    override val width: Float = blockSizeMetres * 0.8f
     override val height: Float = width * texture.height/texture.width
     override val bodyDef: BodyDef = createBodyDef()
     override val fixtureDef: FixtureDef = createFixtureDef()

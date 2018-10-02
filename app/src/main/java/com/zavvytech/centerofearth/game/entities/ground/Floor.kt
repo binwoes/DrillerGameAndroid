@@ -3,14 +3,14 @@ package com.zavvytech.centerofearth.game.entities.ground
 import android.graphics.Canvas
 import android.graphics.RectF
 import com.zavvytech.centerofearth.graphics.Utils
+import com.zavvytech.centerofearth.graphics.Utils.blockSizeMetres
+import com.zavvytech.centerofearth.graphics.Utils.blocksAcrossScreen
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.World
 import java.util.*
 
 object Floor {
     private val blockList = ArrayList<Ground>()
-    private const val blocksAcrossScreen = 5
-    private const val blockSize = Utils.screenWidthMetres / blocksAcrossScreen
     private var floorGenerationDepth = 0f
     private val randomiser = Random()
 
@@ -19,17 +19,17 @@ object Floor {
     }
 
     fun generateFloorIfNeeded(viewport: RectF, world: World) {
-        while (floorGenerationDepth < viewport.bottom + blockSize) {
+        while (floorGenerationDepth < Utils.pixelsToMetres(viewport.bottom) + blockSizeMetres) {
             for (x in 0 until blocksAcrossScreen) {
-                createGround(Vec2(blockSize * x, floorGenerationDepth), world)?.addToBlockList()
+                createGround(Vec2(blockSizeMetres * x, floorGenerationDepth), world)?.addToBlockList()
             }
-            floorGenerationDepth += blockSize
+            floorGenerationDepth += blockSizeMetres
         }
     }
 
     private fun createGround(worldPosition: Vec2, world: World): Ground? {
         return when (randomiser.nextFloat()) {
-            in 0f..0.3f -> Dirt(blockSize, worldPosition, world)
+            in 0f..0.1f -> Dirt(blockSizeMetres, worldPosition, world)
             else -> null
         }
     }

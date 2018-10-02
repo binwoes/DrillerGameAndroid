@@ -16,7 +16,7 @@ class GameScreen : Screen {
     override val screenType = ScreenManager.ScreenType.GAME
     private val stepIterations = 20
     private val world = World(Vec2(0f, 9.81f))
-    val ship = Ship(Vec2(screenWidthMetres * 2/5, 0f), world)
+    val ship = Ship(Vec2(screenWidthMetres/2f, 0f), world)
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
@@ -27,6 +27,7 @@ class GameScreen : Screen {
     override fun onUpdate(dt: Float) {
         world.step(dt, stepIterations, stepIterations)
         ScreenManager.viewport.offsetTo(0f, Utils.metresToPixels(ship.worldPosition.y - screenWidthMetres/2))
+        Floor.generateFloorIfNeeded(ScreenManager.viewport, world)
         world.cleanupBodies { it.position.y < Utils.pixelsToMetres(ScreenManager.viewport.top) }
     }
 
@@ -46,9 +47,11 @@ class GameScreen : Screen {
 private fun World.cleanupBodies(shouldDestroy: (body: Body) -> Boolean) {
     var curr = bodyList
     var next: Body?
-    while (curr != null && shouldDestroy(curr)) {
+    while (curr != null) {
         next = curr.next
-        destroyBody(curr)
+        if (shouldDestroy(curr)) {
+            destroyBody(curr)
+        }
         curr = next
     }
 }
