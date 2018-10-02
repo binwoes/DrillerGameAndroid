@@ -18,8 +18,8 @@ object ScreenManager {
         get() = if (screens.size >= 1) screens[screens.size - 1] else null
 
     fun setSize(width: Float, height: Float) {
-        viewport.right = width
-        viewport.bottom = height
+        viewport.right = viewport.left + width
+        viewport.bottom = viewport.top + height
     }
 
     fun setScreen(type: ScreenType): Screen {
