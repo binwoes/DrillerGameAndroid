@@ -40,6 +40,12 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback {
         super.onDestroy()
     }
 
+    override fun onBackPressed() {
+        if (ScreenManager.onBackPressed()) {
+            super.onBackPressed()
+        }
+    }
+
     private fun stopGameRunning() {
         gameThread?.join(endGameTimeout)
         ScreenManager.disposeAll()

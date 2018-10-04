@@ -5,6 +5,8 @@ import org.jbox2d.common.Vec2
 
 object Utils {
     const val screenWidthMetres = 20f
+    const val blocksAcrossScreen = 7
+    const val blockSizeMetres = screenWidthMetres/blocksAcrossScreen
 
     fun metresToPixels(metres: Float): Float {
         if (ScreenManager.viewport.width() == 0f) return metres

@@ -1,8 +1,9 @@
-package com.zavvytech.centerofearth.entities
+package com.zavvytech.centerofearth.game.entities
 
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.support.annotation.DrawableRes
+import com.zavvytech.centerofearth.ScreenManager
 import com.zavvytech.centerofearth.graphics.BitmapSprite
 import com.zavvytech.centerofearth.graphics.ResourceManager
 import com.zavvytech.centerofearth.graphics.Utils
@@ -12,12 +13,12 @@ import org.jbox2d.dynamics.BodyDef
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-abstract class Entity(val worldPosition: Vec2, private val world: World) {
-    protected abstract var bodyDef: BodyDef
-    protected abstract var fixtureDef: FixtureDef
+abstract class Entity(val initialPosition: Vec2, private val world: World) {
+    protected abstract val bodyDef: BodyDef
+    protected abstract val fixtureDef: FixtureDef
     protected abstract val width: Float
     protected abstract val height: Float
-    private val body: Body by lazy {
+    protected val body: Body by lazy {
         createBody()
     }
     protected val texture by lazy {
@@ -26,10 +27,12 @@ abstract class Entity(val worldPosition: Vec2, private val world: World) {
     private val sprite: BitmapSprite by lazy {
         BitmapSprite(texture)
     }
+    var worldPosition = initialPosition
+        get() = body.position
     private val canvasPosition: RectF = RectF(0f,0f,0f,0f)
         get() {
-            field.left = Utils.metresToPixels(body.position.x)
-            field.top = Utils.metresToPixels(body.position.y)
+            field.left = Utils.metresToPixels(worldPosition.x) - ScreenManager.viewport.left
+            field.top = Utils.metresToPixels(worldPosition.y) - ScreenManager.viewport.top
             field.right = field.left + Utils.metresToPixels(width)
             field.bottom = field.top + Utils.metresToPixels(height)
             return field
@@ -44,6 +47,6 @@ abstract class Entity(val worldPosition: Vec2, private val world: World) {
     }
 
     fun draw(canvas: Canvas) {
-        sprite.draw(canvas, canvasPosition)
+        sprite.draw(canvas, canvasPosition, body.angle)
     }
 }

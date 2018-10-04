@@ -9,4 +9,5 @@ interface Screen {
     fun onUpdate(dt: Float)
     fun onTouch(e: MotionEvent)
     fun dispose()
+    fun onBackPressed()
 }
