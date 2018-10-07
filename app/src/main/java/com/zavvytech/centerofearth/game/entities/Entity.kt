@@ -21,11 +21,8 @@ abstract class Entity(val initialPosition: Vec2, private val world: World) {
     protected val body: Body by lazy {
         createBody()
     }
-    protected val texture by lazy {
-        ResourceManager.getTexture(textureResId())
-    }
-    private val sprite: BitmapSprite by lazy {
-        BitmapSprite(texture)
+    protected val sprite: BitmapSprite by lazy {
+        BitmapSprite(ResourceManager.getTexture(textureResId()))
     }
     var worldPosition = initialPosition
         get() = body.position

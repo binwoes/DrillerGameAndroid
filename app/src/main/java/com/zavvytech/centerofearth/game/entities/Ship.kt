@@ -11,7 +11,7 @@ import org.jbox2d.dynamics.World
 
 class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world) {
     override val width: Float = blockSizeMetres * 0.8f
-    override val height: Float = width * texture.height/texture.width
+    override val height: Float = width * sprite.height/sprite.width
     override val bodyDef: BodyDef = createBodyDef()
     override val fixtureDef: FixtureDef = createFixtureDef()
 
