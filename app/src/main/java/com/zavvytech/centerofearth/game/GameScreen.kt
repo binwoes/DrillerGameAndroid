@@ -21,11 +21,17 @@ class GameScreen : Screen {
     val ship = Ship(Vec2(screenWidthMetres/2f, -blockSizeMetres*2), world)
     private val floor = Floor()
     private val walls = Wall(world)
+    private val analogueStick = AnalogueController(
+            Vec2(ScreenManager.viewport.width()/2, ScreenManager.viewport.height()*0.9f),
+            ScreenManager.viewport.width()/3f,
+            AnalogueControllerDelegate()
+    )
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
         floor.draw(canvas)
         ship.draw(canvas)
+        analogueStick.draw(canvas)
     }
 
     override fun onUpdate(dt: Float) {
@@ -37,15 +43,29 @@ class GameScreen : Screen {
     }
 
     override fun onTouch(e: MotionEvent) {
-
+        analogueStick.onTouch(e)
     }
 
     override fun dispose() {
         world.cleanupAllBodies()
+        analogueStick.dispose()
     }
 
     override fun onBackPressed() {
         ScreenManager.finishScreen(this)
+    }
+
+    class AnalogueControllerDelegate : AnalogueController.Listener {
+        override fun directionUpdated(direction: AnalogueController.Direction) {
+            println(direction.name)
+            TODO("NOT IMPLEMENTED")
+        }
+
+        override fun releasedChanged(released: Boolean) {
+            println(if(released) "released" else "touched")
+            TODO("NOT IMPLEMENTED")
+        }
+
     }
 }
 
