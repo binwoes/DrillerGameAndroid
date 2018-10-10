@@ -58,12 +58,12 @@ class GameScreen : Screen {
     class AnalogueControllerDelegate : AnalogueController.Listener {
         override fun directionUpdated(direction: AnalogueController.Direction) {
             println(direction.name)
-            TODO("NOT IMPLEMENTED")
+//            TODO("NOT IMPLEMENTED")
         }
 
         override fun releasedChanged(released: Boolean) {
             println(if(released) "released" else "touched")
-            TODO("NOT IMPLEMENTED")
+//            TODO("NOT IMPLEMENTED")
         }
 
     }

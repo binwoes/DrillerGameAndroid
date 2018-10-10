@@ -3,16 +3,19 @@ package com.zavvytech.centerofearth.game
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.view.MotionEvent
+import android.view.MotionEvent.*
 import com.zavvytech.centerofearth.R
 import com.zavvytech.centerofearth.graphics.BitmapSprite
 import org.jbox2d.common.Vec2
 import kotlin.properties.Delegates
 
-class AnalogueController(canvasCenter: Vec2, canvasSize: Float, private val listener:Listener) {
+class AnalogueController(private val canvasCenter: Vec2, canvasSize: Float, private val listener:Listener) {
     enum class Direction { LEFT, DOWN, RIGHT, NONE }
 
     private val sizeBackground = canvasSize
     private val sizeControl = canvasSize/2
+    private val canvasDeadZoneRadius = sizeControl/2
+
     private val rectBackground = RectF(canvasCenter.x - sizeBackground/2, canvasCenter.y - sizeBackground/2,
             canvasCenter.x + sizeBackground/2, canvasCenter.y + sizeBackground/2)
     private val rectControl = RectF(canvasCenter.x - sizeControl/2, canvasCenter.y - sizeControl/2,
@@ -35,11 +38,46 @@ class AnalogueController(canvasCenter: Vec2, canvasSize: Float, private val list
     }
 
     fun onTouch(me: MotionEvent?): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when (me?.action) {
+            ACTION_DOWN -> {
+                released = false
+                direction = computeDirection(me.x, me.y)
+            }
+            ACTION_UP -> {
+                released = true
+                direction = Direction.NONE
+            }
+            ACTION_MOVE -> {
+                direction = computeDirection(me.x, me.y)
+            }
+        }
+        return true
+    }
+
+    private fun computeDirection(touchX: Float, touchY: Float): Direction {
+        val relX = touchX - canvasCenter.x
+        val relY = touchY - canvasCenter.y
+        if (relX*relX + relY*relY <= canvasDeadZoneRadius*canvasDeadZoneRadius) {
+            return Direction.NONE
+        }
+        val leftOrUp = (-relY >= relX)
+        val rightOrUp = (relX >= relY)
+        if (rightOrUp) {
+            if (leftOrUp) {
+                return Direction.NONE
+            }
+            return Direction.RIGHT
+        } else {
+            if (leftOrUp) {
+                return Direction.LEFT
+            }
+            return Direction.DOWN
+        }
     }
 
     fun draw(canvas: Canvas) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        backgroundSprite.draw(canvas, rectBackground)
+        controlSprite.draw(canvas, rectControl)
     }
 
     fun dispose() {
