@@ -39,6 +39,7 @@ class GameScreen : Screen {
         ScreenManager.viewport.offsetTo(0f, Utils.metresToPixels(ship.worldPosition.y - screenWidthMetres/2))
         walls.updateWallLocations()
         floor.generateFloorIfNeeded(ScreenManager.viewport, world)
+        ship.onUpdate()
         world.cleanupBodies { it.position.y < Utils.pixelsToMetres(ScreenManager.viewport.top) }
     }
 
@@ -55,15 +56,14 @@ class GameScreen : Screen {
         ScreenManager.finishScreen(this)
     }
 
-    class AnalogueControllerDelegate : AnalogueController.Listener {
+    inner class AnalogueControllerDelegate : AnalogueController.Listener {
         override fun directionUpdated(direction: AnalogueController.Direction) {
             println(direction.name)
-//            TODO("NOT IMPLEMENTED")
+            this@GameScreen.ship.travelDir = direction
         }
 
         override fun releasedChanged(released: Boolean) {
             println(if(released) "released" else "touched")
-//            TODO("NOT IMPLEMENTED")
         }
 
     }
