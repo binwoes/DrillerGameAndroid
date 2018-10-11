@@ -21,9 +21,10 @@ class GameScreen : Screen {
     val ship = Ship(Vec2(screenWidthMetres/2f, -blockSizeMetres*2), world)
     private val floor = Floor()
     private val walls = Wall(world)
+    private val analogueStickSize = ScreenManager.viewport.width()/3.5f
     private val analogueStick = AnalogueController(
-            Vec2(ScreenManager.viewport.width()/2, ScreenManager.viewport.height()*0.9f),
-            ScreenManager.viewport.width()/3f,
+            Vec2(ScreenManager.viewport.width()/2, ScreenManager.viewport.height() - analogueStickSize*0.625f),
+            analogueStickSize,
             AnalogueControllerDelegate()
     )
 
