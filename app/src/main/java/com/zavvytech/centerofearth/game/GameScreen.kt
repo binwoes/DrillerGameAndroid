@@ -21,11 +21,18 @@ class GameScreen : Screen {
     val ship = Ship(Vec2(screenWidthMetres/2f, -blockSizeMetres*2), world)
     private val floor = Floor()
     private val walls = Wall(world)
+    private val analogueStickSize = ScreenManager.viewport.width()/3.5f
+    private val analogueStick = AnalogueController(
+            Vec2(ScreenManager.viewport.width()/2, ScreenManager.viewport.height() - analogueStickSize*0.625f),
+            analogueStickSize,
+            AnalogueControllerDelegate()
+    )
 
     override fun draw(canvas: Canvas) {
         canvas.drawColor((0xFFFFFFFF).toInt())
         floor.draw(canvas)
         ship.draw(canvas)
+        analogueStick.draw(canvas)
     }
 
     override fun onUpdate(dt: Float) {
@@ -33,19 +40,33 @@ class GameScreen : Screen {
         ScreenManager.viewport.offsetTo(0f, Utils.metresToPixels(ship.worldPosition.y - screenWidthMetres/2))
         walls.updateWallLocations()
         floor.generateFloorIfNeeded(ScreenManager.viewport, world)
+        ship.onUpdate()
         world.cleanupBodies { it.position.y < Utils.pixelsToMetres(ScreenManager.viewport.top) }
     }
 
     override fun onTouch(e: MotionEvent) {
-
+        analogueStick.onTouch(e)
     }
 
     override fun dispose() {
         world.cleanupAllBodies()
+        analogueStick.dispose()
     }
 
     override fun onBackPressed() {
         ScreenManager.finishScreen(this)
+    }
+
+    inner class AnalogueControllerDelegate : AnalogueController.Listener {
+        override fun directionUpdated(direction: AnalogueController.Direction) {
+            println(direction.name)
+            this@GameScreen.ship.travelDir = direction
+        }
+
+        override fun releasedChanged(released: Boolean) {
+            println(if(released) "released" else "touched")
+        }
+
     }
 }
 
