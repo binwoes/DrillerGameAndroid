@@ -16,21 +16,34 @@ class AnalogueController(private val canvasCenter: Vec2, canvasSize: Float, priv
     private val sizeControl = canvasSize/2
     private val canvasDeadZoneRadius = sizeControl/2
 
-    private val rectBackground = RectF(canvasCenter.x - sizeBackground/2, canvasCenter.y - sizeBackground/2,
-            canvasCenter.x + sizeBackground/2, canvasCenter.y + sizeBackground/2)
-    private val rectControl = RectF(canvasCenter.x - sizeControl/2, canvasCenter.y - sizeControl/2,
-            canvasCenter.x + sizeControl/2, canvasCenter.y + sizeControl/2)
-
-    private val backgroundSprite = BitmapSprite(R.drawable.control_background)
-    private val controlSprite = BitmapSprite(R.drawable.control)
-
-    var direction: Direction by Delegates.observable(Direction.NONE) {
+    private var direction: Direction by Delegates.observable(Direction.NONE) {
         _, _, newValue -> listener.directionUpdated(newValue)
     }
 
-    var released: Boolean by Delegates.observable(true) {
+    private var released: Boolean by Delegates.observable(true) {
         _, _, newValue -> listener.releasedChanged(newValue)
     }
+
+    private val rectBackground = RectF(canvasCenter.x - sizeBackground/2, canvasCenter.y - sizeBackground/2,
+            canvasCenter.x + sizeBackground/2, canvasCenter.y + sizeBackground/2)
+
+    private val posOffsets: Map<Direction, Vec2> = mapOf(
+            Direction.NONE to Vec2(0f, 0f),
+            Direction.DOWN to Vec2(0f, rectBackground.height()/2f),
+            Direction.LEFT to Vec2(-rectBackground.width()/2f, 0f),
+            Direction.RIGHT to Vec2(rectBackground.width()/2f, 0f)
+    )
+    private val rectControl = RectF()
+        get() {
+            field.left = canvasCenter.x - sizeControl/2 + posOffsets.getValue(direction).x
+            field.top = canvasCenter.y - sizeControl/2 + posOffsets.getValue(direction).y
+            field.right = canvasCenter.x + sizeControl/2 + posOffsets.getValue(direction).x
+            field.bottom = canvasCenter.y + sizeControl/2 + posOffsets.getValue(direction).y
+            return field
+        }
+
+    private val backgroundSprite = BitmapSprite(R.drawable.control_background)
+    private val controlSprite = BitmapSprite(R.drawable.control)
 
     interface Listener {
         fun directionUpdated(direction: Direction)

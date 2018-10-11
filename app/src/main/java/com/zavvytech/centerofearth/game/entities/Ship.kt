@@ -18,7 +18,7 @@ class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world)
     override val fixtureDef: FixtureDef = createFixtureDef()
     var travelDir: AnalogueController.Direction = NONE
     private val shipMotorStrength = body.mass*5.5f
-    private var forces = mapOf(
+    private val forces = mapOf(
             NONE to Vec2(),
             LEFT to Vec2(-shipMotorStrength, 0f),
             RIGHT to Vec2(shipMotorStrength, 0f),
