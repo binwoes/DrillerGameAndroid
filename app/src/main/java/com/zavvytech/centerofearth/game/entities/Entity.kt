@@ -19,14 +19,16 @@ abstract class Entity(val initialPosition: Vec2, private val world: World) {
     protected abstract val width: Float
     protected abstract val height: Float
     protected val body: Body by lazy {
-        createBody()
+        val body: Body = world.createBody(bodyDef)
+        body.createFixture(fixtureDef)
+        body
     }
     protected val sprite: BitmapSprite by lazy {
         BitmapSprite(ResourceManager.getTexture(textureResId()))
     }
     var worldPosition = initialPosition
         get() = body.position
-    private val canvasPosition: RectF = RectF(0f,0f,0f,0f)
+    private val canvasPosition: RectF = RectF()
         get() {
             field.left = Utils.metresToPixels(worldPosition.x) - ScreenManager.viewport.left
             field.top = Utils.metresToPixels(worldPosition.y) - ScreenManager.viewport.top
@@ -36,12 +38,6 @@ abstract class Entity(val initialPosition: Vec2, private val world: World) {
         }
 
     @DrawableRes abstract fun textureResId(): Int
-
-    private fun createBody(): Body {
-        val body: Body = world.createBody(bodyDef)
-        body.createFixture(fixtureDef)
-        return body
-    }
 
     fun draw(canvas: Canvas) {
         sprite.draw(canvas, canvasPosition, body.angle)

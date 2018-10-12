@@ -40,7 +40,7 @@ class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world)
         bodyDef.angle = 0.0f
         bodyDef.linearVelocity = initialVelocity
         bodyDef.angularVelocity = 0.0f
-        bodyDef.fixedRotation = false
+        bodyDef.fixedRotation = true
         bodyDef.active = true
         bodyDef.bullet = false
         bodyDef.allowSleep = true
@@ -55,6 +55,8 @@ class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world)
     private fun createFixtureDef(): FixtureDef {
         val shape = CircleShape()
         shape.radius = width/2f
+        shape.m_p.x = width/2f
+        shape.m_p.y = width/2f
         val fixtureDef = FixtureDef()
         fixtureDef.shape = shape
         fixtureDef.userData = null
