@@ -47,7 +47,7 @@ class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world)
         bodyDef.gravityScale = 1.0f
         bodyDef.linearDamping = 0.0f
         bodyDef.angularDamping = 0.0f
-        bodyDef.userData = ObjectType.SHIP
+        bodyDef.userData = this
         bodyDef.type = BodyType.DYNAMIC
         return bodyDef
     }
