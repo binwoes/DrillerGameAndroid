@@ -32,6 +32,7 @@ class Wall(world: World) {
         val bodyDef = BodyDef()
         bodyDef.type = BodyType.STATIC
         bodyDef.position = Vec2(xPos, pixelsToMetres(ScreenManager.viewport.top))
+        bodyDef.userData = this
         val shape = EdgeShape()
         shape.set(
                 Vec2(0f, pixelsToMetres(-ScreenManager.viewport.height())),
