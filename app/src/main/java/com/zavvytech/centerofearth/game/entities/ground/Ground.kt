@@ -36,7 +36,7 @@ abstract class Ground(blockSize: Float, initialPosition: Vec2, world: World): En
 
     private fun createFixtureDef(): FixtureDef {
         val shape = PolygonShape()
-        shape.setAsBox(width/2, height/2)
+        shape.setAsBox(width/2, height/2, Vec2(width/2, height/2), 0f)
         val fixtureDef = FixtureDef()
         fixtureDef.shape = shape
         fixtureDef.userData = null
