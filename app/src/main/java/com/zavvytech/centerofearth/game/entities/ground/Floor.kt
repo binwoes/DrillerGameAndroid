@@ -12,7 +12,7 @@ import java.util.*
 class Floor {
     private val blockList = ArrayList<Ground>()
     private var floorGenerationDepth = 0f
-    private val randomiser = Random()
+    private val random = Random()
 
     fun draw(canvas: Canvas) {
         blockList.forEach { it.draw(canvas) }
@@ -28,9 +28,9 @@ class Floor {
     }
 
     private fun createGround(worldPosition: Vec2, world: World): Ground? {
-        return when (randomiser.nextFloat()) {
-            in 0f..0.1f -> Dirt(blockSizeMetres, worldPosition, world)
-            else -> null
+        return when (random.nextFloat()) {
+            in 0f..0.1f -> null
+            else -> Dirt(blockSizeMetres, worldPosition, world)
         }
     }
 
