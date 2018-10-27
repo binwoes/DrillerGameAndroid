@@ -28,6 +28,10 @@ abstract class Entity(val initialPosition: Vec2, private val world: World) {
     }
     var worldPosition = initialPosition
         get() = body.position
+
+    var worldCentre = worldPosition
+        get() = Vec2(worldPosition.x + width/2, worldPosition.y + height/2)
+
     private val canvasPosition: RectF = RectF()
         get() {
             field.left = Utils.metresToPixels(worldPosition.x) - ScreenManager.viewport.left
