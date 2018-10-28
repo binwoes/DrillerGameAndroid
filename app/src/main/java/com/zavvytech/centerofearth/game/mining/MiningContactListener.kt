@@ -1,4 +1,4 @@
-package com.zavvytech.centerofearth.game.physics
+package com.zavvytech.centerofearth.game.mining
 
 import com.zavvytech.centerofearth.game.AnalogueController
 import com.zavvytech.centerofearth.game.entities.Ship
@@ -8,47 +8,32 @@ import org.jbox2d.callbacks.ContactListener
 import org.jbox2d.collision.Manifold
 import org.jbox2d.dynamics.contacts.Contact
 
-class MiningContactListener: ContactListener {
+class MiningContactListener(val ship: Ship): ContactListener {
     private val miningContactMap : MutableMap<Contact, MiningContact> = HashMap()
     private val miningContactDirectionMap: MutableMap<AnalogueController.Direction, MiningContact> = HashMap()
-
-    override fun endContact(contact: Contact?) {
-        contact?.createMiningContact()?.also {
-            miningContactDirectionMap.remove(miningContactMap[contact]?.directionOfGround)
-            miningContactMap.remove(contact)
-        }
-    }
 
     override fun beginContact(contact: Contact?) {
         contact?.createMiningContact()?.also {
             miningContactMap[contact] = it
             miningContactDirectionMap[it.directionOfGround] = it
+            ship.miningDelegate.contactStarted(it.directionOfGround, it)
+        }
+    }
+
+    override fun endContact(contact: Contact?) {
+        contact?.createMiningContact()?.also {
+            ship.miningDelegate.contactEnded(it.directionOfGround, it)
+            miningContactDirectionMap.remove(miningContactMap[contact]?.directionOfGround)
+            miningContactMap.remove(contact)
         }
     }
 
     override fun preSolve(contact: Contact?, oldManifold: Manifold?) {}
     override fun postSolve(contact: Contact?, impulse: ContactImpulse?) {}
 
-    private class MiningContact(private val ship: Ship, private val ground: Ground) {
-        val directionOfGround by lazy {
-            fun computeDir(): AnalogueController.Direction {
-                val relVec = ship.worldCentre.sub(ground.worldCentre)
-                val leftOrUp = (-relVec.y >= relVec.x)
-                val rightOrUp = (relVec.x >= relVec.y)
-                if (rightOrUp) {
-                    if (leftOrUp) {
-                        return AnalogueController.Direction.NONE
-                    }
-                    return AnalogueController.Direction.RIGHT
-                } else {
-                    if (leftOrUp) {
-                        return AnalogueController.Direction.LEFT
-                    }
-                    return AnalogueController.Direction.DOWN
-                }
-            }
-            computeDir()
-        }
+    interface ChangeListener {
+        fun contactStarted(direction: AnalogueController.Direction, miningContact: MiningContact)
+        fun contactEnded(direction: AnalogueController.Direction, miningContact: MiningContact)
     }
 
     private fun Contact.createMiningContact(): MiningContact? {

@@ -1,6 +1,7 @@
 package com.zavvytech.centerofearth.game.entities.ground
 
 import com.zavvytech.centerofearth.game.entities.Entity
+import com.zavvytech.centerofearth.game.entities.Ship
 import org.jbox2d.collision.shapes.PolygonShape
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.BodyDef
@@ -47,6 +48,7 @@ abstract class Ground(blockSize: Float, initialPosition: Vec2, world: World): En
     }
 
     abstract fun onMine()
+    abstract fun miningTimeMillis(ship: Ship): Long
     abstract fun groundTypeProbability(depthMetres: Float): Float
 
 }

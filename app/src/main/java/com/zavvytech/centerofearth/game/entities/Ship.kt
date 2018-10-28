@@ -3,7 +3,8 @@ package com.zavvytech.centerofearth.game.entities
 import com.zavvytech.centerofearth.R
 import com.zavvytech.centerofearth.game.AnalogueController
 import com.zavvytech.centerofearth.game.AnalogueController.Direction.*
-import com.zavvytech.centerofearth.game.physics.MiningContactListener
+import com.zavvytech.centerofearth.game.mining.MiningContactListener
+import com.zavvytech.centerofearth.game.mining.MiningDelegate
 import com.zavvytech.centerofearth.graphics.Utils.blockSizeMetres
 import org.jbox2d.collision.shapes.CircleShape
 import org.jbox2d.common.Vec2
@@ -18,7 +19,15 @@ class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world)
     override val bodyDef: BodyDef = createBodyDef()
     override val fixtureDef: FixtureDef = createFixtureDef()
     var travelDir: AnalogueController.Direction = NONE
+        set(value) {
+            val callListener = field != value
+            field = value
+            if (callListener) {
+                miningDelegate.directionUpdated(value)
+            }
+        }
     private val shipMotorStrength = body.mass*5.5f
+    val miningDelegate = MiningDelegate()
     private val forces = mapOf(
             NONE to Vec2(),
             LEFT to Vec2(-shipMotorStrength, 0f),
@@ -26,7 +35,7 @@ class Ship (initialPosition: Vec2, world: World): Entity(initialPosition, world)
             DOWN to Vec2(0f, shipMotorStrength)
     )
     init {
-        world.setContactListener(MiningContactListener())
+        world.setContactListener(MiningContactListener(this))
     }
 
     override fun textureResId(): Int {
